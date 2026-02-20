@@ -1,40 +1,50 @@
-# Kealy Studio Community Website Template
+# Links Website
 
-A website template for the Kealy Studio Community built with Astro. This template provides a marketing homepage, deep link handling for mobile apps, and automatic app store redirects.
+An Astro website for mobile deep-link handling and password recovery.
 
-## Features
+This project is not a marketing homepage. It serves lightweight link pages that:
+- try to open your app via custom URL scheme
+- fall back to the iOS App Store / Google Play on mobile
+- redirect desktop users to a configured web URL
+- provide a dedicated `/reset-password` flow using Supabase auth tokens
 
-- **Marketing Homepage** - A customizable landing page for your app
-- **Deep Link Support** - Configuration files for iOS Universal Links and Android App Links
-- **Smart Redirects** - Automatically redirects users to your app or the appropriate app store if the app isn't installed
-- **Platform Detection** - Detects iOS, Android, or desktop and handles each appropriately
+## Routes
+
+- `/` and `/404` use the same deep-link redirect experience (`DeepLinkPage.astro`)
+- `/reset-password` renders a reset form, validates tokens from URL hash/query, sets a Supabase session, and updates the user password
+
+## Configuration
+
+Set values in `site-config.json`:
+- `appName`
+- `appTagline`
+- `metaDescription`
+- `appScheme`
+- `iosAppStoreUrl`
+- `androidPlayStoreUrl`
+- `fallbackWebUrl`
+- `ogImageUrl`
+- `supabaseUrl`
+- `supabaseAnonKey`
 
 ## Project Structure
 
 ```text
-site-config.json        <-- edit this to configure the app
-public/
-  .well-known/
-    apple-app-site-association
-    assetlinks.json
+site-config.json
 src/
   components/
     DeepLinkPage.astro
   pages/
     index.astro
-    reset.astro
+    reset-password.astro
     404.astro
 ```
 
-## Configuration
-
-Edit `site-config.json` in the project root. All values are plain JSON — no environment variables needed.
-
 ## Commands
 
-| Command           | Action                                      |
-| :---------------- | :------------------------------------------ |
-| `npm install`     | Install dependencies                        |
-| `npm run dev`     | Start local dev server at `localhost:4321`  |
-| `npm run build`   | Build production site to `./dist/`          |
-| `npm run preview` | Preview build locally before deploying      |
+| Command | Action |
+| :--- | :--- |
+| `npm install` | Install dependencies |
+| `npm run dev` | Start local dev server at `localhost:4321` |
+| `npm run build` | Build production site to `./dist/` |
+| `npm run preview` | Preview production build locally |
