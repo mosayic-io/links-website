@@ -1,0 +1,12 @@
+{
+  "appName": "Your App",
+  "appTagline": "Your tagline here",
+  "metaDescription": "Redirecting you to the app...",
+  "appScheme": "yourapp",
+  "iosAppStoreUrl": "https://apps.apple.com/us/app/your-app-name/id000000000",
+  "androidPlayStoreUrl": "https://play.google.com/store/apps/details?id=com.yourcompany.yourapp",
+  "fallbackWebUrl": "https://yourapp.com",
+  "ogImageUrl": "https://yourapp.com/og-image.png",
+  "supabaseUrl": "https://your-project-id.supabase.co",
+  "supabaseAnonKey": "your-supabase-anon-key"
+}
