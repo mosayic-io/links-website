@@ -121,8 +121,12 @@ const title = pageTitle ?? `${config.appName} Link`;
 
           window.location.href = appUrl;
           setTimeout(function() {
-            window.location.replace(fallbackUrl);
-          }, 900);
+            // If the app opened, the browser was backgrounded and this page
+            // is hidden — don't drag the user off to the store as well.
+            if (!document.hidden) {
+              window.location.replace(fallbackUrl);
+            }
+          }, 1500);
         }
 
         const manualLink = document.getElementById("manual-redirect");

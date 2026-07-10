@@ -8,5 +8,5 @@
   "fallbackWebUrl": "https://yourapp.com",
   "ogImageUrl": "https://yourapp.com/og-image.png",
   "supabaseUrl": "https://your-project-id.supabase.co",
-  "supabaseAnonKey": "your-supabase-anon-key"
+  "supabasePublishableKey": "your-supabase-publishable-key"
 }

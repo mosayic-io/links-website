@@ -6,7 +6,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@config": ["./site-config.json"]
+      "@config": ["./site.config.json"]
     }
   }
 }
