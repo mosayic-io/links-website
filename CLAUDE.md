@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-A tiny Astro site with two jobs, deployed on a dedicated subdomain of the app's
+A tiny Astro site with three jobs, deployed on a dedicated subdomain of the app's
 domain — by convention `links.<domain>` — so the whole subdomain belongs to
 the app. See `README.md` for the routes, the config keys and the scripts.
 
@@ -12,6 +12,12 @@ the app. See `README.md` for the routes, the config keys and the scripts.
 2. **Password recovery.** `/reset-password` renders the Supabase reset form.
    It is deliberately EXCLUDED from the Apple applinks config so reset emails
    open in a browser, where the form lives, rather than in the app.
+3. **Email confirmation.** `/email-confirmed` is where Supabase's sign-up
+   confirmation email lands once confirmation is switched on (the stack
+   ships with it off). It signs nobody in — it wipes the tokens from the
+   URL fragment and sends the person back to the app. Also EXCLUDED from
+   the applinks config; the mobile app carries a matching
+   `app/email-confirmed.tsx` route for Android, which claims the whole host.
 
 ## Production is not a place you run things
 
@@ -22,7 +28,8 @@ This site is static and touches no database of its own, but the app it belongs t
 - `public/_headers` makes Pages serve the extensionless
   `apple-app-site-association` as `application/json`, which Apple requires.
   **Never delete or rename it.**
-- Keep the `/reset-password` exclusion in `apple-app-site-association`.
+- Keep the `/reset-password` and `/email-confirmed` exclusions in
+  `apple-app-site-association`.
 - `site.config.json`'s `appScheme` must equal `expo.scheme` in the mobile
   app's `app.json`; the host this site is served on must equal the one in the
   app's `ios.associatedDomains` and `android.intentFilters`. Those values are

@@ -5,7 +5,7 @@ its password-reset form. It is designed to be deployed on a dedicated
 subdomain of the app's main website — by convention `links.yourapp.com` —
 so that the whole subdomain belongs to the app.
 
-This project is not a marketing homepage. It has two jobs:
+This project is not a marketing homepage. It has three jobs:
 
 1. **Deep-link plumbing** — it hosts the two files that prove to iOS and
    Android that your app and your domain belong to the same owner
@@ -19,6 +19,14 @@ This project is not a marketing homepage. It has two jobs:
    updates the user's password. This path is deliberately **excluded** from
    the Apple applinks config so reset emails always open in a browser, where
    the form lives, rather than in the app.
+3. **Email confirmation** — `/email-confirmed` is where the sign-up
+   confirmation email lands once email confirmation is switched on in
+   Supabase (it ships off; see the API repo's `supabase/config.toml`). It
+   tells the person their address is confirmed (or that the link expired),
+   wipes the session Supabase put in the URL fragment, and sends them back
+   to the app. Also **excluded** from the Apple applinks config; Android
+   claims the whole host, so the mobile app has a matching route that
+   forwards to sign-in.
 
 ## Routes
 
@@ -26,6 +34,8 @@ This project is not a marketing homepage. It has two jobs:
   (`DeepLinkPage.astro`). Any path on the domain works — the path is passed
   through to the app's URL scheme.
 - `/reset-password` — the Supabase password-reset form.
+- `/email-confirmed` — the landing page for Supabase's sign-up confirmation
+  email. Dormant until email confirmation is turned on.
 
 ## Configuration
 
@@ -46,7 +56,7 @@ Then fill in the two proof files:
 
 - `public/.well-known/apple-app-site-association` — replace `<TEAM ID>`
   (Apple Developer → Membership details) and `<BUNDLE ID>`. Keep the
-  `/reset-password` exclusion.
+  `/reset-password` and `/email-confirmed` exclusions.
 - `public/.well-known/assetlinks.json` — replace `<BUNDLE ID>` (the Android
   package name) and the SHA-256 certificate fingerprint(s). Include one entry
   per signing certificate that matters: the EAS-managed keystore (shown by

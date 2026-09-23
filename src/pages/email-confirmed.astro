@@ -1,0 +1,132 @@
+---
+// Where the sign-up confirmation email lands, when email confirmation is on.
+// Supabase confirms the address, then redirects here — with #error=… in the
+// fragment when the link had expired or was already used. Nothing on this
+// page signs anyone in: the tokens Supabase puts in the fragment on success
+// are wiped, and the person goes back to the app and signs in there.
+//
+// Excluded from the Apple applinks config so it opens in the browser. Android
+// claims the whole host, so the mobile app carries a matching route
+// (app/email-confirmed.tsx) that finishes the sign-in and goes home.
+import siteConfig from "@config";
+
+const appName = siteConfig.appName;
+const openAppUrl = `${siteConfig.appScheme}://`;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Email confirmed · {appName}</title>
+    <meta name="description" content={`Confirm your ${appName} email address.`} />
+    <meta name="robots" content="noindex, nofollow" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&display=swap"
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+
+  <body>
+    <main class="panel">
+      <div class="brand">{appName}</div>
+
+      <div id="confirmed">
+        <h1>Your email is confirmed</h1>
+        <p>Go back to {appName} on your phone. If it asks you to sign in, use your email and password.</p>
+      </div>
+
+      <div id="failed" hidden>
+        <h1>This link has expired</h1>
+        <p>
+          Confirmation links work once and expire after a while. If you already confirmed, just sign in.
+          If not, create your account again in {appName} with the same email address and we'll send a new link.
+        </p>
+      </div>
+
+      <a class="button" id="open-app" href={openAppUrl} hidden>Open {appName}</a>
+    </main>
+
+    <script>
+      const hash = new URLSearchParams(window.location.hash.slice(1));
+      if (hash.has("error") || hash.has("error_code")) {
+        document.getElementById("confirmed")!.hidden = true;
+        document.getElementById("failed")!.hidden = false;
+      }
+      // Supabase puts a session in the fragment on success; this page has no
+      // use for it, so it doesn't linger in the address bar or history.
+      if (window.location.hash) {
+        history.replaceState(null, "", window.location.pathname);
+      }
+      if (/android|iPad|iPhone|iPod/i.test(navigator.userAgent)) {
+        document.getElementById("open-app")!.hidden = false;
+      }
+    </script>
+  </body>
+</html>
+
+<style>
+  :root {
+    color-scheme: light;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    font-family: "Space Grotesk", "Helvetica Neue", Arial, sans-serif;
+    background: radial-gradient(circle at top, #f7f2e8, #e6ddcf);
+    color: #1d1b16;
+  }
+
+  .panel {
+    width: min(420px, 90vw);
+    box-sizing: border-box;
+    background: #fffaf0;
+    border: 1px solid #e4d6c3;
+    border-radius: 24px;
+    padding: 2.5rem 2rem 2rem;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(41, 29, 14, 0.12);
+  }
+
+  .brand {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-weight: 600;
+    color: #78624a;
+  }
+
+  h1 {
+    margin: 1rem 0 0.75rem;
+    font-size: 1.9rem;
+  }
+
+  p {
+    margin: 0.5rem 0 1.5rem;
+    color: #4b3d2b;
+  }
+
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.85rem 1.8rem;
+    background: #2e2214;
+    color: #fdf5e6;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .button[hidden] {
+    display: none;
+  }
+</style>

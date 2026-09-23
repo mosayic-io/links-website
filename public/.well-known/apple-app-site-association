@@ -5,6 +5,7 @@
         "appIDs": ["<TEAM ID>.<BUNDLE ID>"],
         "components": [
           { "/": "/reset-password", "exclude": true },
+          { "/": "/email-confirmed", "exclude": true },
           { "/": "*" }
         ]
       }
