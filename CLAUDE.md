@@ -18,6 +18,9 @@ the app. See `README.md` for the routes, the config keys and the scripts.
    URL fragment and sends the person back to the app. Also EXCLUDED from
    the applinks config; the mobile app carries a matching
    `app/email-confirmed.tsx` route for Android, which claims the whole host.
+   The page keeps the recovery session in memory only (`persistSession: false`),
+   wipes the tokens from the address bar once read, and signs the session out
+   after the password is set. Keep all three: the browser may be a borrowed one.
 
 ## Production is not a place you run things
 
