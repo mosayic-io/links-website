@@ -10,7 +10,7 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.49.1",
-    "astro": "^7.3.5"
+    "@supabase/supabase-js": "^2.118.0",
+    "astro": "^7.4.1"
   }
 }
